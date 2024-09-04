@@ -1,7 +1,8 @@
 import { Dialog, Box,Typography,List,ListItem, styled } from "@mui/material";
 import { qrCodeImage } from "../constants/data";
 import { GoogleLogin } from "@react-oauth/google";
-
+import { useContext } from "react";
+import { AccountContext } from "../context/AccountProvider";
 import { jwtDecode } from "jwt-decode";
 
 const dialogStyle ={
@@ -47,22 +48,28 @@ display:flex;
 const Container = styled(Box)
 `
 padding: 56px 0 56px 56px;
-`
+` 
+
 
 const Logindial = () =>{
 
+    const {setAcount} = useContext(AccountContext);
     const onLoginSuccess = (res)=>{
        const decode = jwtDecode(res.credential)
-       console.log(decode)
+       //SETTING THIS DECODE VALUE OIN SETACCOUNT CONTEXT
+       setAcount(decode);
     }
     const onLoginError =(res)=>{
         console.log( "login failed", res)
     }
 
+    //calling context
+   
 
     return(
         <Dialog open = {true}
             PaperProps={{sx : dialogStyle}}
+            hideBackdrop={true}
         >
         <Component>
             <Container>
